@@ -1,0 +1,135 @@
+@keyframes hinge {
+    0% {
+        -webkit-transform-origin: top left;
+        transform-origin: top left;
+        -webkit-animation-timing-function: ease-in-out;
+        animation-timing-function: ease-in-out;
+    }
+
+    20%,
+    60% {
+        -webkit-transform: rotate3d(0, 0, 1, 80deg);
+        transform: rotate3d(0, 0, 1, 80deg);
+        -webkit-transform-origin: top left;
+        transform-origin: top left;
+        -webkit-animation-timing-function: ease-in-out;
+        animation-timing-function: ease-in-out;
+    }
+
+    40%,
+    80% {
+        -webkit-transform: rotate3d(0, 0, 1, 60deg);
+        transform: rotate3d(0, 0, 1, 60deg);
+        -webkit-transform-origin: top left;
+        transform-origin: top left;
+        -webkit-animation-timing-function: ease-in-out;
+        animation-timing-function: ease-in-out;
+        opacity: 0.8;
+    }
+
+    to {
+        -webkit-transform: translate3d(0, 700px, 0);
+        transform: translate3d(0, 700px, 0);
+        opacity: 0.1;
+    }
+}
+
+.hinge {
+    animation-duration: 5s;
+    animation-name: hinge;
+    animation-iteration-count: infinite;
+}
+
+@keyframes bounceOutRight {
+    20% {
+        opacity: 0.8;
+        -webkit-transform: translate3d(-20px, 0, 0);
+        transform: translate3d(-20px, 0, 0);
+    }
+
+    to {
+        opacity: 0.1;
+        -webkit-transform: translate3d(2000px, 0, 0);
+        transform: translate3d(2000px, 0, 0);
+    }
+}
+
+.bounceOutRight {
+    animation-name: bounceOutRight;
+    animation-duration: 6s;
+    animation-iteration-count: infinite;
+}
+@keyframes pulse {
+    from {
+        transform: scale3d(1, 1, 1);
+    }
+    50% {
+        transform: scale3d(1.2, 1.2, 1.2);
+    }
+    to {
+        transform: scale3d(1, 1, 1);
+    }
+}
+.pulse {
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+@keyframes flush {
+    from,
+    10%,
+    30%,
+    50%,
+    to {
+        opacity: 1;
+    }
+    5%,
+    15%,
+    25%,
+    75% {
+        opacity: 0;
+    }
+}
+.flush {
+    animation-name: flush;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+}
+.dark {
+    animation-duration: 0.5s;
+    animation-name: toDark;
+}
+.light {
+    animation-duration: 0.5s;
+    animation-name: toLight;
+}
+@keyframes toLight {
+    form {
+        background-color: #222;
+        opacity: 1;
+    }
+    50% {
+        background-color: #666;
+        opacity: 0.25;
+        scale: 1.01;
+    }
+    to {
+        background-color: #fff;
+        opacity: 0.5;
+    }
+}
+@keyframes toDark {
+    form {
+        background-color: #fff;
+        opacity: 0.5;
+    }
+    50% {
+        background-color: #666;
+        opacity: 0.75;
+        scale: 1.01;
+    }
+    to {
+        background-color: #222;
+        opacity: 1;
+    }
+}
