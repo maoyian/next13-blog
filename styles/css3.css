@@ -133,3 +133,41 @@
         opacity: 1;
     }
 }
+.showSearchBox {
+    animation-name: showSearchBox;
+    animation-duration: 1s;
+}
+.hideSearchBox {
+    animation-name: hideSearchBox;
+    animation-duration: 1s;
+}
+@keyframes showSearchBox {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes hideSearchBox {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+.showMenu {
+    animation-name: showMenu;
+    animation-duration: 0.5s;
+}
+@keyframes showMenu {
+    from {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}

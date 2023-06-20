@@ -1,17 +1,18 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { forwardRef, useContext } from 'react'
-import { GlobalContext } from '@/utils/context'
+import { GlobalContext } from '@/pages/_app'
 import BlogItem from './BlogItem'
-function List(props, ref) {
-  const { isTop } = useContext(GlobalContext)
+function BlogList(props, ref) {
   const router = useRouter()
+  const {
+    scroll: { scrollPercent },
+  } = useContext(GlobalContext)
+  console.log('li', scrollPercent)
   return (
     <div
       ref={ref}
-      className={`${
-        !isTop ? 'pt-8' : ''
-      } px-2 dark:bg-slate-950 dark:text-white`}
+      className={`blog-list px-2 dark:bg-slate-950 dark:text-white`}
     >
       <BlogItem />
       <BlogItem />
@@ -46,21 +47,7 @@ function List(props, ref) {
       <BlogItem />
       <BlogItem />
       <BlogItem />
-      <BlogItem />
-      <BlogItem />
-      <BlogItem />
-      <BlogItem />
-      <BlogItem />
-      <BlogItem />
-      <BlogItem />
-      <BlogItem />
-      <BlogItem />
-      <BlogItem />
-      <BlogItem />
-      <BlogItem />
-      <BlogItem />
-      <BlogItem />
     </div>
   )
 }
-export default forwardRef(List)
+export default forwardRef(BlogList)

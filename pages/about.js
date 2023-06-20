@@ -1,21 +1,18 @@
 import React from 'react'
 import SeoHead from '@/components/SeoHead'
-import { GlobalContext } from '@/utils/context'
+import { GlobalContext } from './_app'
 import { useContext } from 'react'
 import { useRouter } from 'next/router'
 export default function About() {
-  const { age, addAge } = useContext(GlobalContext)
+  console.log(useContext(GlobalContext))
   const router = useRouter()
   return (
     <>
       <SeoHead title="about" name="about" content="about desc" />
       <div className=" dark:bg-slate-800 dark:text-white">
-        {age}
-        <button
-          className="px-4 py-2 m-2 bg-yellow-300 rounded text-slate-50"
-          onClick={addAge}
-        >
-          {age}
+        bt
+        <button className="px-4 py-2 m-2 bg-yellow-300 rounded text-slate-50">
+          bb
         </button>
         <button
           className="px-4 py-2 rounded bg-sky-300 text-slate-50"
