@@ -1,5 +1,5 @@
 import React from 'react'
-import SeoHead from '@/components/SeoHead'
+import SeoHead from '@/components/common/SeoHead'
 import { GlobalContext } from './_app'
 import { useContext } from 'react'
 import { useRouter } from 'next/router'

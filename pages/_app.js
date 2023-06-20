@@ -1,7 +1,7 @@
 import '@/styles/tailwind.css'
 import '@/styles/iconfont.css'
 import '@/styles/css3.css'
-import SeoHead from '@/components/SeoHead'
+import SeoHead from '@/components/common/SeoHead'
 import Navbar from '@/components/navbar'
 import React, {
   useState,
@@ -11,10 +11,10 @@ import React, {
   useRef,
   useCallback,
 } from 'react'
-import ThemeContext from '@/components/ThemContext'
+import ThemeContext from '@/context/ThemContext'
 import { SWRConfig } from 'swr'
 import SearchBox from '@/components/SearchBox'
-import PopMenu from '@/components/PopMenu'
+import PopMenu from '@/components/menu/PopMenu'
 import { _throttle } from '@/utils/tools'
 export const myFetch = (url, method = 'GET', params = {}) => {
   return fetch(url, {

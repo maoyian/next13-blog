@@ -1,14 +1,16 @@
 import React from 'react'
 import Image from 'next/image'
-export default function BlogItem() {
-  const info = {
-    imgUrl: 'https://oss.lixiaoxu.cn/halo/image-1677136471067.png',
-    title: 'next入门到放弃',
-    author: 'mmmmmmmmmmmmmm',
-    headImg:
-      'https://oss.lixiaoxu.cn/halo2//0e1c1845b0741107bd33f52429f93f82_1.jpg',
-    priseCount: 99,
-  }
+export default function BlogItem(props) {
+  console.log(props)
+  const { info } = props
+  // {
+  //   imgUrl: 'https://oss.lixiaoxu.cn/halo/image-1677136471067.png',
+  //   title: 'next入门到放弃',
+  //   author: 'mmmmmmmmmmmmmm',
+  //   headImg:
+  //     'https://oss.lixiaoxu.cn/halo2//0e1c1845b0741107bd33f52429f93f82_1.jpg',
+  //   priseCount: 99,
+  // }
   const handleVote = () => {
     console.log('vote')
   }

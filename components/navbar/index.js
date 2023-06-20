@@ -1,7 +1,7 @@
 'use client'
 import React, { useContext, useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ThemeContext } from '../ThemContext'
+import { ThemeContext } from '../../context/ThemContext'
 import { GlobalContext } from '@/pages/_app'
 export default function Navbar() {
   const { toggleThemeHandler, isDarkTheme } = useContext(ThemeContext)
@@ -13,12 +13,10 @@ export default function Navbar() {
   const {
     scroll: { scrollPercent },
   } = useContext(GlobalContext)
-  console.log('n-sc', scrollPercent)
   const {
     search: { isSearch, setSearch },
     menu: { isMenu, setMenu },
   } = useContext(GlobalContext)
-  console.log('ccc', useContext(GlobalContext))
 
   const handleShowMenu = () => {
     setMenu(true)
