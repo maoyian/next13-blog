@@ -1,6 +1,7 @@
 import '@/styles/tailwind.css'
 import '@/styles/iconfont.css'
 import '@/styles/css3.css'
+import '@/styles/common.css'
 import SeoHead from '@/components/common/SeoHead'
 import Navbar from '@/components/navbar'
 import React, {

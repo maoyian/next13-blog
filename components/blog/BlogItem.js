@@ -40,16 +40,20 @@ export default function BlogItem(props) {
           </div>
           <div className="flex gap-2">
             {/* 看过 */}
-            <div className="i5:hidden iPad:block">
+            <div className="cursor-pointer i5:hidden iPad:block">
               <i className="iconfont">&#xe600;</i> {info.priseCount}
             </div>
             {/* 评论 */}
-            <div onClick={handleComment} className="i5:hidden iPad:block">
+            <div
+              onClick={handleComment}
+              className="cursor-pointer i5:hidden iPad:block"
+            >
               <i className="iconfont">&#xe7f5;</i> {info.priseCount}
             </div>
             {/* 点赞 */}
             <div onClick={handleVote}>
-              <i className="iconfont">&#xe651;</i> {info.priseCount}
+              <i className="cursor-pointer iconfont">&#xe651;</i>{' '}
+              {info.priseCount}
             </div>
           </div>
         </div>

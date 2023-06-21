@@ -5,9 +5,15 @@ import { GlobalContext } from '@/pages/_app'
 import BlogItem from './BlogItem'
 import useSWR from 'swr'
 import Loading from '../common/Loading'
-const fetcher = (url) => fetch(url).then((res) => res.json())
+// const fetcher = () => (url) => fetch(url).then((res) => res.json())
+import { fetcher } from '@/utils/fetcher'
 function BlogList(props, ref) {
-  const { data, error, isLoading } = useSWR('/api/blogs', fetcher)
+  const { data, error, isLoading } = useSWR(
+    '/api/blogs',
+    fetcher({ method: 'GET', params: { name: 'm1' } })
+  )
+
+  console.log('data', data)
   const router = useRouter()
   if (error) return <div>Failed to load</div>
   if (isLoading) return <Loading />
