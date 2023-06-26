@@ -1,7 +1,5 @@
 import React from 'react'
-import { useRouter } from 'next/router'
-import { forwardRef, useContext } from 'react'
-import { GlobalContext } from '@/pages/_app'
+import { forwardRef, useEffect } from 'react'
 import BlogItem from './BlogItem'
 import useSWR from 'swr'
 import Loading from '../common/Loading'
@@ -13,19 +11,19 @@ function BlogList(props, ref) {
     fetcher({ method: 'GET', params: { name: 'm1' } })
   )
 
-  console.log('data', data)
-  const router = useRouter()
-  if (error) return <div>Failed to load</div>
-  if (isLoading) return <Loading />
-  if (!data) return null
-  console.log(data, 'ddd')
-  const { blogs } = data
+  // console.log('data', data)
+  // if (error) return <div>Failed to load</div>
+  // if (isLoading) return <Loading />
+  // if (!data) return null
+  // console.log(data, 'ddd')
+  // const { blogs } = data
   return (
     <div
       ref={ref}
       className={`blog-list blog-list px-2 dark:bg-slate-950 dark:text-white`}
     >
-      {blogs && blogs.map((blog) => <BlogItem key={blog._id} info={blog} />)}
+      {/* {blogs && blogs.map((blog) => <BlogItem key={blog._id} info={blog} />)} */}
+      <BlogItem />
     </div>
   )
 }

@@ -3,17 +3,20 @@ import { GlobalContext } from '@/pages/_app'
 export default function ToTop(props) {
   const {
     scroll: { scrollPercent },
+    device: { isSafari },
   } = useContext(GlobalContext)
-  console.log('props', props, scrollPercent)
+  console.log('props', props, scrollPercent, isSafari)
   const toTop = () => {
-    props.listRef.current.scrollIntoView({ behavior: 'smooth' })
+    props.listRef.current &&
+      props.listRef.current.scrollIntoView({ behavior: 'smooth' })
   }
-  const percent = scrollPercent * 2.51
 
+  if (scrollPercent < 1) return <></>
   return (
     <>
       <svg
-        className="fixed text-red-300 bottom-3 right-2"
+        style={{ bottom: isSafari ? 'calc(75px + 1rem)' : '1.25rem' }}
+        className="fixed text-red-300 right-2"
         xmlns="http://www.w3.org/2000/svg"
         height="40"
         width="40"
@@ -35,12 +38,13 @@ export default function ToTop(props) {
           fill="none"
           stroke="currentColor"
           transform="rotate(-90 55 55)"
-          strokeDasharray={percent + ',251'}
+          strokeDasharray={scrollPercent * 2.51 + ',251'}
         ></circle>
       </svg>
       <i
+        style={{ bottom: isSafari ? 'calc(75px + 1.5rem)' : '1.75rem' }}
         onClick={toTop}
-        className="fixed text-red-300 cursor-pointer select-none iconfont bottom-5 right-5"
+        className="fixed text-red-300 cursor-pointer select-none iconfont right-5"
       >
         &#xe652;
       </i>

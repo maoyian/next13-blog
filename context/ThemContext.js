@@ -6,7 +6,6 @@ const themeKey = 'theme-mode'
 export default function ThemeContextProvider(props) {
   // 初始为light
   const initialTheme = Cookies.get(themeKey) === 'dark' ? true : false
-  // window.alert(initialTheme)
   const [isDarkTheme, setIsDarkTheme] = useState(initialTheme)
   /**
  * 默认light
@@ -18,6 +17,14 @@ export default function ThemeContextProvider(props) {
       expires: expires,})
  */
   useEffect(() => {
+    const toggleDarkClassToBody = () => {
+      document
+        .querySelector('html')
+        ?.classList.remove(!isDarkTheme ? 'dark' : 'light')
+      document
+        .querySelector('html')
+        ?.classList.add(isDarkTheme ? 'dark' : 'light')
+    }
     console.log('toggle', isDarkTheme ? 'dark' : '')
     const date = new Date()
     const expires = new Date(date.setMonth(date.getMonth() + 1))
@@ -26,23 +33,22 @@ export default function ThemeContextProvider(props) {
       expires: expires,
     })
     toggleDarkClassToBody()
-  })
+  }, [isDarkTheme])
 
   const toggleThemeHandler = () => {
     setIsDarkTheme(!isDarkTheme)
   }
 
-  const toggleDarkClassToBody = () => {
-    document
-      .querySelector('html')
-      ?.classList.remove(!isDarkTheme ? 'dark' : 'light')
-    document
-      .querySelector('html')
-      ?.classList.add(isDarkTheme ? 'dark' : 'light')
-  }
   return (
-    <ThemeContext.Provider value={{ isDarkTheme, toggleThemeHandler }}>
-      {props.children}
-    </ThemeContext.Provider>
+    <>
+      <style jsx global>{`
+        body {
+          background-color: ${isDarkTheme ? 'rgb(2 6 23)' : 'white'};
+        }
+      `}</style>
+      <ThemeContext.Provider value={{ isDarkTheme, toggleThemeHandler }}>
+        {props.children}
+      </ThemeContext.Provider>
+    </>
   )
 }

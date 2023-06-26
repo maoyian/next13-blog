@@ -29,7 +29,7 @@ export default function Navbar() {
   return (
     <>
       {/* 顶部导航栏 */}
-      <div className="fixed top-0 left-0 right-0 flex items-center justify-between p-2 text-2xl bg-white shadow-sm select-none h-14 dark:bg-slate-950 dark:bg-opacity-60 bg-white/30 backdrop-blur">
+      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-2 text-2xl bg-white shadow-sm select-none h-14 dark:bg-slate-950 dark:bg-opacity-60 bg-white/30 backdrop-blur">
         {/* 首页 */}
         <Link href="/">
           <i className="z-10 text-red-400 iconfont">&#xe722;</i>

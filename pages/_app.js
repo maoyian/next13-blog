@@ -4,14 +4,7 @@ import '@/styles/css3.css'
 import '@/styles/common.css'
 import SeoHead from '@/components/common/SeoHead'
 import Navbar from '@/components/navbar'
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  createContext,
-  useRef,
-  useCallback,
-} from 'react'
+import React, { useState, useEffect, createContext, useRef } from 'react'
 import ThemeContext from '@/context/ThemContext'
 import { SWRConfig } from 'swr'
 import SearchBox from '@/components/SearchBox'
@@ -31,31 +24,38 @@ export default function MyApp({ Component }) {
   const [isSearch, setSearch] = useState(false)
   const [isMenu, setMenu] = useState(false)
   const mWarpRef = useRef(null)
+  const [isSafari, setSafari] = useState(false)
 
   /**
-   * 页面滚动百分百
+   * m-warp发生滚动时计算滚动百分比
    */
   const [scrollPercent, setScrollPercent] = useState(0)
   const handleListScroll = () => {
     const { scrollTop, scrollHeight, clientHeight } = mWarpRef.current
     setScrollPercent((scrollTop / (scrollHeight - clientHeight)) * 100)
-    console.log(scrollPercent, 'scrollPercent')
   }
   useEffect(() => {
     /**
-     * 对不同设备的页面兼容
+     * 对移动端ios上safari底部工具栏的兼容
      */
-    const mWarp = document.querySelector('#m-warp')
     const mobile = () => {
-      const info = navigator.userAgent
-      const DEVICE = info.includes('iPhone')
-        ? 'iphone'
-        : info.includes('Android')
-        ? 'Android'
-        : 'Pc'
-      DEVICE === 'iphone' && mWarp.classList.add('pb-32')
-      console.log('device', DEVICE)
+      let isSafari = false
+      const ua = navigator.userAgent.toLowerCase()
+      if (
+        ua.indexOf('applewebkit') > -1 &&
+        ua.indexOf('mobile') > -1 &&
+        ua.indexOf('safari') > -1 &&
+        ua.indexOf('linux') === -1 &&
+        ua.indexOf('android') === -1 &&
+        ua.indexOf('chrome') === -1 &&
+        ua.indexOf('ios') === -1 &&
+        ua.indexOf('browser') === -1
+      ) {
+        isSafari = true
+      }
+      setSafari(isSafari)
     }
+    mobile()
     window.addEventListener('resize', mobile)
     return () => {
       window.removeEventListener('resize')
@@ -63,44 +63,45 @@ export default function MyApp({ Component }) {
   }, [])
   return (
     <>
-      <div className="h-screen overflow-hidden bg-slate-50">
-        <SWRConfig
-          value={{
-            // 全局配置
-            refreshInterval: 0, // 多少ms刷新一次请求 0不刷新
-            // fetcher: (url, init) => {
-            //   fetch(url, init).then((res) => res.json())
-            // },
-            // fetcher: myFetch,
-          }}
+      <ThemeContext>
+        <div
+          style={{ height: isSafari ? 'calc(100vh - 105px)' : '100vh' }}
+          className="box-border overflow-hidden bg-slate-50"
         >
-          <SeoHead name="博客" content="博客描述" />
-          <GlobalContext.Provider
+          <SWRConfig
             value={{
-              search: { isSearch, setSearch },
-              menu: { isMenu, setMenu },
-              scroll: {
-                scrollPercent,
-                setScrollPercent,
-              },
+              // 全局配置
+              refreshInterval: 0, // 多少ms刷新一次请求 0不刷新
             }}
           >
-            <ThemeContext>
+            <SeoHead name="博客" content="博客描述" />
+            <GlobalContext.Provider
+              value={{
+                search: { isSearch, setSearch },
+                menu: { isMenu, setMenu },
+                device: { isSafari },
+                scroll: {
+                  scrollPercent,
+                  setScrollPercent,
+                },
+              }}
+            >
               <Navbar />
               <div
                 ref={mWarpRef}
                 onScrollCapture={_throttle(handleListScroll)}
                 id="m-warp"
-                className="box-border h-screen py-2 pt-16 overflow-y-auto scroll-pt-16 dark:bg-slate-950 dark:text-white"
+                style={{ height: isSafari ? 'calc(100vh - 105px)' : '100vh' }}
+                className="box-border py-2 pt-16 overflow-y-auto scroll-pt-16 dark:bg-slate-950 dark:text-white"
               >
                 <SearchBox />
                 <PopMenu />
                 <Component />
               </div>
-            </ThemeContext>
-          </GlobalContext.Provider>
-        </SWRConfig>
-      </div>
+            </GlobalContext.Provider>
+          </SWRConfig>
+        </div>
+      </ThemeContext>
     </>
   )
 }

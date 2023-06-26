@@ -4,7 +4,21 @@ export default function PopMenu() {
   const popMenuRef = useRef(null)
   const {
     menu: { isMenu, setMenu },
+    device: { isSafari },
   } = useContext(GlobalContext)
+
+  /**
+   *处理移动端蒙层下的滚动问题
+   */
+  useEffect(() => {
+    const mWarp = document.querySelector('#m-warp')
+    if (isMenu) {
+      mWarp.style.overflow = 'hidden'
+    } else {
+      mWarp.style.overflow = 'scroll'
+    }
+  }, [isMenu])
+
   //   阻止事件冒泡
   const stopBubble = (e) => {
     e.stopPropagation()
@@ -17,20 +31,6 @@ export default function PopMenu() {
     }
     console.log(item)
   }
-  useEffect(() => {
-    // 根据设备来加padding
-    const info = navigator.userAgent
-    const DEVICE = info.includes('iPhone')
-      ? 'iphone'
-      : info.includes('Android')
-      ? 'Android'
-      : 'Pc'
-
-    DEVICE === 'iphone' &&
-      popMenuRef.current &&
-      popMenuRef.current.classList.add('pb-12')
-    console.log('device1', popMenuRef)
-  }, [])
   const [menuList, setMenuList] = useState([
     {
       id: Math.random(),
@@ -45,141 +45,66 @@ export default function PopMenu() {
       linkUrl: '',
       subMenu: [{ id: Math.random(), name: '菜单一_1', linkUrl: '' }],
     },
-    { id: Math.random(), name: '菜单二', linkUrl: '', subMenu: null },
-    {
-      id: Math.random(),
-      name: '菜单一',
-      linkUrl: '',
-      subMenu: [{ id: Math.random(), name: '菜单一_1', linkUrl: '' }],
-    },
-    { id: Math.random(), name: '菜单二', linkUrl: '', subMenu: null },
-    {
-      id: Math.random(),
-      name: '菜单一',
-      linkUrl: '',
-      subMenu: [{ id: Math.random(), name: '菜单一_1', linkUrl: '' }],
-    },
-    { id: Math.random(), name: '菜单二', linkUrl: '', subMenu: null },
-    {
-      id: Math.random(),
-      name: '菜单一',
-      linkUrl: '',
-      subMenu: [{ id: Math.random(), name: '菜单一_1', linkUrl: '' }],
-    },
-    { id: Math.random(), name: '菜单二', linkUrl: '', subMenu: null },
-    {
-      id: Math.random(),
-      name: '菜单一',
-      linkUrl: '',
-      subMenu: [{ id: Math.random(), name: '菜单一_1', linkUrl: '' }],
-    },
-    { id: Math.random(), name: '菜单二', linkUrl: '', subMenu: null },
-    {
-      id: Math.random(),
-      name: '菜单一',
-      linkUrl: '',
-      subMenu: [{ id: Math.random(), name: '菜单一_1', linkUrl: '' }],
-    },
-    { id: Math.random(), name: '菜单二', linkUrl: '', subMenu: null },
-    {
-      id: Math.random(),
-      name: '菜单一',
-      linkUrl: '',
-      subMenu: [{ id: Math.random(), name: '菜单一_1', linkUrl: '' }],
-    },
-    { id: Math.random(), name: '菜单二', linkUrl: '', subMenu: null },
-    {
-      id: Math.random(),
-      name: '菜单一',
-      linkUrl: '',
-      subMenu: [{ id: Math.random(), name: '菜单一_1', linkUrl: '' }],
-    },
-    { id: Math.random(), name: '菜单二', linkUrl: '', subMenu: null },
-    {
-      id: Math.random(),
-      name: '菜单一',
-      linkUrl: '',
-      subMenu: [{ id: Math.random(), name: '菜单一_1', linkUrl: '' }],
-    },
-    { id: Math.random(), name: '菜单二', linkUrl: '', subMenu: null },
-    {
-      id: Math.random(),
-      name: '菜单一',
-      linkUrl: '',
-      subMenu: [{ id: Math.random(), name: '菜单一_1', linkUrl: '' }],
-    },
-    { id: Math.random(), name: '菜单二', linkUrl: '', subMenu: null },
-    {
-      id: Math.random(),
-      name: '菜单一',
-      linkUrl: '',
-      subMenu: [{ id: Math.random(), name: '菜单一_1', linkUrl: '' }],
-    },
-    { id: Math.random(), name: '菜单二', linkUrl: '', subMenu: null },
-    {
-      id: Math.random(),
-      name: '菜单一',
-      linkUrl: '',
-      subMenu: [{ id: Math.random(), name: '菜单一_1', linkUrl: '' }],
-    },
-    { id: Math.random(), name: '菜单二', linkUrl: '', subMenu: null },
   ])
 
   return (
     <>
       {isMenu && (
         <div
-          className="fixed top-0 bottom-0 right-0 flex bg-opacity-75 searchBox left-2 bg-slate-500"
+          className="fixed bottom-0 right-0 flex bg-opacity-75 top-14 searchBox left-2 bg-slate-500 text-slate-500"
           onClick={() => setMenu(false)}
         >
-          <div
+          {/* 菜单 */}
+          <ul
+            id="ul"
+            style={{
+              height: isSafari
+                ? 'calc(100vh - 105px - 3.5rem)'
+                : 'calc(100vh - 3.5rem)',
+            }}
             onClick={stopBubble}
-            className="w-64 p-2 bg-white dark:bg-slate-950 left-2 right-2 top-16 text-slate-500"
+            ref={popMenuRef}
+            className="w-64 p-2 overflow-auto bg-white dark:bg-slate-950"
           >
-            {/* 菜单 */}
-            <ul ref={popMenuRef} className="h-screen p-2 overflow-auto">
-              {menuList &&
-                menuList.map((menu) => (
-                  <>
-                    <li
-                      key={menu.id}
-                      className="flex items-center justify-between p-2 mb-2 rounded bg-slate-200 dark:bg-slate-800"
-                      onClick={() => handleSwitchMenu(menu)}
-                    >
-                      <div>{menu.name}</div>
-                      {menu.subMenu && (
-                        <i
-                          className={`iconfont ${
-                            menu.showSub ? 'origin-center rotate-90 ' : ''
-                          }`}
+            {menuList &&
+              menuList.map((menu) => (
+                <>
+                  <li
+                    key={menu.id}
+                    className="flex items-center justify-between p-2 mb-2 rounded cursor-pointer bg-slate-200 dark:bg-slate-800"
+                    onClick={() => handleSwitchMenu(menu)}
+                  >
+                    <div>{menu.name}</div>
+                    {menu.subMenu && (
+                      <i
+                        className={`iconfont ${
+                          menu.showSub ? 'origin-center rotate-90 ' : ''
+                        }`}
+                      >
+                        &#xe840;
+                      </i>
+                    )}
+                  </li>
+                  {/* 子菜单 */}
+                  {menu.subMenu &&
+                    menu.subMenu.map((subMenu) => (
+                      <>
+                        <ul
+                          key={subMenu.id}
+                          className={menu.showSub ? 'block showMenu' : 'hidden'}
                         >
-                          &#xe840;
-                        </i>
-                      )}
-                    </li>
-                    {/* 子菜单 */}
-                    {menu.subMenu &&
-                      menu.subMenu.map((subMenu) => (
-                        <>
-                          <ul
-                            key={subMenu.id}
-                            className={
-                              menu.showSub ? 'block showMenu' : 'hidden'
-                            }
+                          <li
+                            className="flex items-center justify-between p-2 mb-2 rounded bg-slate-200 dark:bg-slate-800"
+                            onClick={() => handleSwitchMenu(subMenu)}
                           >
-                            <li
-                              className="flex items-center justify-between p-2 mb-2 rounded bg-slate-200 dark:bg-slate-800"
-                              onClick={() => handleSwitchMenu(subMenu)}
-                            >
-                              <div>{subMenu.name}</div>
-                            </li>
-                          </ul>
-                        </>
-                      ))}
-                  </>
-                ))}
-            </ul>
-          </div>
+                            <div>{subMenu.name}</div>
+                          </li>
+                        </ul>
+                      </>
+                    ))}
+                </>
+              ))}
+          </ul>
         </div>
       )}
     </>
