@@ -5,8 +5,8 @@ export const ThemeContext = createContext()
 const themeKey = 'theme-mode'
 export default function ThemeContextProvider(props) {
   // 初始为light
-  const initialTheme = Cookies.get(themeKey) === 'dark' ? true : false
-  const [isDarkTheme, setIsDarkTheme] = useState(initialTheme)
+
+  const [isDarkTheme, setIsDarkTheme] = useState(false)
   /**
  * 默认light
  * 从cookie里面取 Cookies.get('themeKey')
@@ -17,6 +17,11 @@ export default function ThemeContextProvider(props) {
       expires: expires,})
  */
   useEffect(() => {
+    const initialTheme =
+      Cookies.get(themeKey) || localStorage.getItem(themeKey) || false
+    setIsDarkTheme(initialTheme)
+  }, [])
+  useEffect(() => {
     const toggleDarkClassToBody = () => {
       document
         .querySelector('html')
@@ -24,14 +29,18 @@ export default function ThemeContextProvider(props) {
       document
         .querySelector('html')
         ?.classList.add(isDarkTheme ? 'dark' : 'light')
+      const date = new Date()
+      const expires = new Date(date.setMonth(date.getMonth() + 1))
+      Cookies.set(themeKey, isDarkTheme ? 'dark' : '', {
+        secure: true,
+        expires: expires,
+      })
+      console.log('toggle', isDarkTheme ? 'dark' : '')
     }
-    console.log('toggle', isDarkTheme ? 'dark' : '')
-    const date = new Date()
-    const expires = new Date(date.setMonth(date.getMonth() + 1))
-    Cookies.set(themeKey, isDarkTheme ? 'dark' : '', {
-      secure: true,
-      expires: expires,
-    })
+    // 部分不支持cookie
+    if (Cookies.get(themeKey) === undefined) {
+      localStorage.setItem(themeKey, isDarkTheme ? 'dark' : '')
+    }
     toggleDarkClassToBody()
   }, [isDarkTheme])
 
