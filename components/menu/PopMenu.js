@@ -1,4 +1,4 @@
-import { useContext, useRef, useEffect, useState } from 'react'
+import React, { useContext, useRef, useEffect, useState } from 'react'
 import { GlobalContext } from '@/pages/_app'
 export default function PopMenu() {
   const popMenuRef = useRef(null)
@@ -56,6 +56,7 @@ export default function PopMenu() {
           onClick={() => setMenu(false)}
         >
           {/* 菜单 */}
+
           <ul
             id="ul"
             style={{
@@ -69,9 +70,8 @@ export default function PopMenu() {
           >
             {menuList &&
               menuList.map((menu) => (
-                <>
+                <React.Fragment key={menu.id}>
                   <li
-                    key={menu.id}
                     className="flex items-center justify-between p-2 mb-2 rounded cursor-pointer bg-slate-200 dark:bg-slate-800"
                     onClick={() => handleSwitchMenu(menu)}
                   >
@@ -89,21 +89,17 @@ export default function PopMenu() {
                   {/* 子菜单 */}
                   {menu.subMenu &&
                     menu.subMenu.map((subMenu) => (
-                      <>
-                        <ul
-                          key={subMenu.id}
-                          className={menu.showSub ? 'block showMenu' : 'hidden'}
-                        >
-                          <li
-                            className="flex items-center justify-between p-2 mb-2 rounded bg-slate-200 dark:bg-slate-800"
-                            onClick={() => handleSwitchMenu(subMenu)}
-                          >
-                            <div>{subMenu.name}</div>
-                          </li>
-                        </ul>
-                      </>
+                      <li
+                        key={subMenu.id}
+                        className={`flex ${
+                          menu.showSub ? 'block showMenu' : 'hidden'
+                        } items-center justify-between p-2 mb-2 rounded bg-slate-200 dark:bg-slate-800`}
+                        onClick={() => handleSwitchMenu(subMenu)}
+                      >
+                        <div>{subMenu.name}</div>
+                      </li>
                     ))}
-                </>
+                </React.Fragment>
               ))}
           </ul>
         </div>

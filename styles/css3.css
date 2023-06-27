@@ -161,6 +161,7 @@
     animation-name: showMenu;
     animation-duration: 0.5s;
 }
+
 @keyframes showMenu {
     from {
         opacity: 0;
