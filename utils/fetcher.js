@@ -3,7 +3,7 @@
  *
  * */
 export const fetcher = (config) => {
-  const { method = 'GET', headers = {}, params = {} } = config
+  const { method = 'GET', headers = {}, params = {} } = config || {}
   const option = { method, headers, body: JSON.stringify(params) }
   // GET / HEAD 不支持body
   if (method === 'GET' || method === 'HEAD') {

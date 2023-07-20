@@ -8,10 +8,16 @@ use('blog');
 
 // The drop() command destroys all data from a collection.
 // Make sure you run it against the correct database and collection.
-db.sales.drop();
+// db.sales.drop();
 
 // Insert a few documents into the sales collection.
 db.blogs.insertMany([
+   {imgUrl: 'https://oss.lixiaoxu.cn/halo/image-1677136471067.png',
+    title: 'next入门',
+    author: 'mm',
+    headImg:
+      'https://oss.lixiaoxu.cn/halo2//0e1c1845b0741107bd33f52429f93f82_1.jpg',
+    priseCount: 19,},
  {imgUrl: 'https://oss.lixiaoxu.cn/halo/image-1677136471067.png',
     title: 'next入门到放弃',
     author: 'mmmmmmmmmmmmmm',

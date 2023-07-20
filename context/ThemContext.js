@@ -35,7 +35,6 @@ export default function ThemeContextProvider(props) {
         secure: true,
         expires: expires,
       })
-      console.log('toggle', isDarkTheme ? 'dark' : '')
     }
     // 部分不支持cookie
     if (Cookies.get(themeKey) === undefined) {

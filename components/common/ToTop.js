@@ -5,7 +5,6 @@ export default function ToTop(props) {
     scroll: { scrollPercent },
     device: { isSafari },
   } = useContext(GlobalContext)
-  console.log('props', props, scrollPercent, isSafari)
   const toTop = () => {
     props.listRef.current &&
       props.listRef.current.scrollIntoView({ behavior: 'smooth' })

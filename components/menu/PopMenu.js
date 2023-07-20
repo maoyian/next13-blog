@@ -29,7 +29,6 @@ export default function PopMenu() {
       item.showSub = !item.showSub
       setMenuList([...menuList])
     }
-    console.log(item)
   }
   const [menuList, setMenuList] = useState([
     {
@@ -46,7 +45,6 @@ export default function PopMenu() {
       subMenu: [{ id: Math.random(), name: '菜单一_1', linkUrl: '' }],
     },
   ])
-  console.log('menuList', menuList)
 
   return (
     <>

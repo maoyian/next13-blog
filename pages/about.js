@@ -4,7 +4,6 @@ import { GlobalContext } from './_app'
 import { useContext } from 'react'
 import { useRouter } from 'next/router'
 export default function About() {
-  console.log(useContext(GlobalContext))
   const router = useRouter()
   return (
     <>

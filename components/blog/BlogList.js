@@ -8,22 +8,30 @@ import { fetcher } from '@/utils/fetcher'
 function BlogList(props, ref) {
   const { data, error, isLoading } = useSWR(
     '/api/blogs',
-    fetcher({ method: 'GET', params: { name: 'm1' } })
+    fetcher({ method: 'GET' })
   )
+  const handleAdd = () => {
+    console.log('add')
+    fetcher({ method: 'PUT', params: { name: 'm1' } })('/api/blogs')
+  }
+  useEffect(() => {
+    handleAdd()
+  }, [])
 
-  // console.log('data', data)
-  // if (error) return <div>Failed to load</div>
-  // if (isLoading) return <Loading />
-  // if (!data) return null
-  // console.log(data, 'ddd')
-  // const { blogs } = data
+  if (error) return <div>Failed to load</div>
+  if (isLoading) return <Loading />
+  if (!data) return null
+  const { list: blogs } = data
+
   return (
     <div
       ref={ref}
       className={`blog-list blog-list px-2 dark:bg-slate-950 dark:text-white`}
     >
-      {/* {blogs && blogs.map((blog) => <BlogItem key={blog._id} info={blog} />)} */}
-      <BlogItem />
+      <button onClick={handleAdd}>add</button>
+      {blogs && blogs.map((blog) => <BlogItem key={blog._id} info={blog} />)}
+      {blogs.length === 0 && 'empty'}
+      {/* <BlogItem /> */}
     </div>
   )
 }
