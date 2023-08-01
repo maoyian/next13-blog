@@ -2,6 +2,8 @@ import '@/styles/tailwind.css'
 import '@/styles/iconfont.css'
 import '@/styles/css3.css'
 import '@/styles/common.css'
+import '@/styles/game.css'
+
 import SeoHead from '@/components/common/SeoHead'
 import Navbar from '@/components/navbar'
 import React, { useState, useEffect, createContext, useRef } from 'react'
