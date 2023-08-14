@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ['antd-mobile'],
   styledComponents: true,
   images: {
     remotePatterns: [
