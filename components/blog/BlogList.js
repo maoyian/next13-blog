@@ -7,7 +7,14 @@ import { setQuery } from '@/utils/params'
 import { useBlogList } from '@/hooks/useBlogList'
 import { Button, Toast } from 'antd-mobile'
 function BlogList(props, ref) {
-  const { data, error, isLoading, mutate } = useBlogList()
+  const filter = {
+    sortBy: 'createTime',
+    order: 'des',
+    per_page: 10,
+    page: 5, // 37 82
+    author: 'mm3',
+  }
+  const { data, error, isLoading, mutate } = useBlogList(filter)
   const handleAdd = async () => {
     const r = await fetcher({
       method: 'POST',

@@ -5,7 +5,8 @@ import { enCode, deCode } from '@/utils/auth'
 import { getQuery } from '@/utils/params'
 // 博客列表 查询 新建 修改 删除
 export default async function handler(req, res) {
-  const { db } = await connectToDatabase()
+  const { db, client } = await connectToDatabase()
+
   const { method } = req
   console.log(
     `请求方法<${req.method}>请求路径:<${req.url}>, body:<${req.body}>, params:<${req.params}>`
@@ -20,19 +21,36 @@ export default async function handler(req, res) {
     case 'GET': {
       const u = req.url.split('/api/blogs?')[1]
       const filter = getQuery(u) // 获取url上的查询参数
-      const order = JSON.parse(req.headers.order)
-      order.createTime = +order.createTime
+      const { order, sortBy, page, per_page, ...select } = filter
+      // 排序
+      const sortOption =
+        sortBy && (order === 'des' || order === 'asc')
+          ? {
+              [sortBy]: order === 'asc' ? 1 : -1,
+            }
+          : {}
+      // 分页
+      const limitSize = per_page ? +per_page : Infinity
+      const offset = page ? page * limitSize : 1
       // 查询
       const list = await db
         .collection('blogs')
-        .find(filter)
-        .sort(order)
+        .find(select)
+        .sort(sortOption)
+        // .limit(limitSize)
+        // .skip(offset)
         .toArray()
-      // 对_id加密
       const enCodeList = list.map((li) => {
+        // 对_id加密
         return { ...li, _id: enCode(li._id) }
       })
-      res.status(200).json({ list: enCodeList })
+      console.log('enCodeList :>> ', enCodeList.length, offset, limitSize)
+      const start = (page - 1) * per_page
+      const end = page * per_page
+      console.log('start-end :>> ', start, end)
+      res
+        .status(200)
+        .json({ list: enCodeList.slice(start, end), total: list.length })
       break
     }
     case 'POST': {

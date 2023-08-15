@@ -14,9 +14,7 @@ export default async function handler(req, res) {
   if (id.length === 43) {
     id = '/' + id
   }
-
   console.log('id--- :>> ', id)
-
   try {
     const deCodeId = deCode(id)
     console.log('deCodeId :>> ', deCodeId)
@@ -54,8 +52,11 @@ export default async function handler(req, res) {
         // 删除
         break
       }
+      case 'PUT': {
+        // 修改完整资源
+      }
       case 'PATCH': {
-        // 修改单个字段
+        // 修改单个资源
         const updateTime = new Date().getTime()
         const { action } = params
         const { filed, value } = action
