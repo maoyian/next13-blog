@@ -12,6 +12,7 @@ import { SWRConfig } from 'swr'
 import SearchBox from '@/components/SearchBox'
 import PopMenu from '@/components/menu/PopMenu'
 import { _throttle } from '@/utils/tools'
+
 export const myFetch = (url, method = 'GET', params = {}) => {
   return fetch(url, {
     method,

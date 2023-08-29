@@ -11,6 +11,7 @@ export default function BlogItem(props) {
   //   priseCount: 99,
   // }
   const [loading, setLoading] = useState(false)
+  const [clicked, setClicked] = useState(false)
   const handleVote = (id) => {
     onUpdate(id, { filed: 'priseCount', value: 1 })
   }
@@ -71,8 +72,11 @@ export default function BlogItem(props) {
             </div>
             {/* 点赞 */}
             <div
+              className={`${clicked ? 'pulse' : ''}`}
               onClick={(e) => {
                 e.stopPropagation()
+                setClicked(true)
+                setTimeout(() => setClicked(false), 1000)
                 handleVote(info._id)
               }}
             >

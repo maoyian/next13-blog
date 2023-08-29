@@ -5,7 +5,7 @@ import { enCode, deCode } from '@/utils/auth'
 import { getQuery } from '@/utils/params'
 // 博客列表 查询 新建 修改 删除
 export default async function handler(req, res) {
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   const { method } = req
   console.log(
@@ -44,10 +44,9 @@ export default async function handler(req, res) {
         // 对_id加密
         return { ...li, _id: enCode(li._id) }
       })
-      console.log('enCodeList :>> ', enCodeList.length, offset, limitSize)
+      // 手动分页
       const start = (page - 1) * per_page
       const end = page * per_page
-      console.log('start-end :>> ', start, end)
       res
         .status(200)
         .json({ list: enCodeList.slice(start, end), total: list.length })
@@ -64,7 +63,6 @@ export default async function handler(req, res) {
       })
       break
     }
-
     case 'DELETE': {
       console.log('req :>> ', req)
       // 删除

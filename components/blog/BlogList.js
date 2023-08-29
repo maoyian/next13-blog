@@ -1,20 +1,14 @@
 import React from 'react'
-import { forwardRef } from 'react'
+import { forwardRef, useContext, useState } from 'react'
 import BlogItem from './BlogItem'
 import Loading from '../common/Loading'
 import { fetcher } from '@/configs/fetcher'
 import { setQuery } from '@/utils/params'
 import { useBlogList } from '@/hooks/useBlogList'
 import { Button, Toast } from 'antd-mobile'
+import { GlobalContext } from '@/pages/_app'
+
 function BlogList(props, ref) {
-  const filter = {
-    sortBy: 'createTime',
-    order: 'des',
-    per_page: 10,
-    page: 5, // 37 82
-    author: 'mm3',
-  }
-  const { data, error, isLoading, mutate } = useBlogList(filter)
   const handleAdd = async () => {
     const r = await fetcher({
       method: 'POST',
@@ -30,7 +24,13 @@ function BlogList(props, ref) {
       },
     })('/api/blogs')
     console.log('r-new :>> ', r)
-    mutate() // 重新请求列表
+    if (r.success) {
+      Toast.show({
+        icon: 'success',
+        content: '添加成功',
+      })
+      mutate() // 重新请求列表
+    }
   }
   const handleUpdate = async (id, action) => {
     await fetcher({
@@ -67,20 +67,61 @@ function BlogList(props, ref) {
     return Promise.resolve(r.success)
   }
 
+  const {
+    scroll: { scrollPercent },
+  } = useContext(GlobalContext)
+  const [nextLading, setNextLoading] = useState(false)
+  const [filter, setFilter] = useState({
+    sortBy: 'createTime',
+    order: 'asc',
+    per_page: 8,
+    page: 1, // 37 82
+    author: 'mm3',
+  })
+
+  const { data, error, isLoading, mutate, setSize, size } = useBlogList(filter)
+  // const issues = data ? [].concat(...data) : [];
+  // const isLoadingMore =
+  //   isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined')
+  // const isEmpty = data?.[0]?.list?.length === 0
+  // const isReachingEnd = isEmpty || (data && data[data.length - 1]?.length < 4)
+  console.log('data :>> ', data)
+  if (scrollPercent === 100) {
+    console.log('size :>> ', size)
+    // if (!isLoadingMore && !isReachingEnd) setSize(size + 1)
+    // console.log('jia :>> ', isLoading)
+    // setNextLoading(true)
+    // setFilter((old) => {
+    //   return {
+    //     ...old,
+    //     page: old.page + 1,
+    //   }
+    // })
+  }
+
   if (error) return <div>Failed to load</div>
   if (isLoading) return <Loading />
-  if (!data) return null
-  const { list: blogs } = data
+  if (!data)
+    return (
+      <div
+        onClick={() => {
+          console.log(22)
+          setSize(1)
+        }}
+      >
+        load
+      </div>
+    )
+  const { list: blogs } = data[0]
 
   return (
     <div
       ref={ref}
       className={`blog-list px-2 dark:bg-slate-950 dark:text-white`}
     >
-      <Button size="small" color="success">
-        Success
+      <Button onClick={handleAdd} size="small" color="success">
+        add
       </Button>
-      <button onClick={handleAdd}>add</button>
       {blogs &&
         blogs.length &&
         blogs.map((blog) => (

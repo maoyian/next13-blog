@@ -12,8 +12,6 @@ export const getQuery = (queryStr = '') => {
     for (let arr of iterator) {
       let k = arr[0]
       let v = arr[1]
-      console.log('k :>> ', k)
-      console.log('v :>> ', v)
       json[k] = v
     }
   }
