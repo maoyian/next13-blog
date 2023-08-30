@@ -6,6 +6,9 @@ import { getQuery } from '@/utils/params'
 // 博客列表 查询 新建 修改 删除
 export default async function handler(req, res) {
   const { db } = await connectToDatabase()
+  if (!db) {
+    throw new Error('db error')
+  }
 
   const { method } = req
   console.log(

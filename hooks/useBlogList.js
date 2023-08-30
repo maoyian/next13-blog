@@ -32,20 +32,22 @@ function useBlogList(filter = {}) {
     sortField: 'createTime',
     sortOrder: 'des',
   }
-  const { data, error, isLoading, mutate, size, setSize } = useSWRInfinite(
-    (index) => {
-      filter.page = (index || 1) + 1
-      console.log('index :>> ', index)
-      const query = setQuery(filter)
-
-      return `/api/blogs${query}`
-    },
-    fetcher({ method: 'GET', headers })
-    // { use: [logger] }
-  )
+  const { data, error, isLoading, isValidating, mutate, size, setSize } =
+    useSWRInfinite(
+      (index) => {
+        filter.page = index + 1
+        console.log('index :>> ', index)
+        console.log('filter.page :>> ', filter.page)
+        const query = setQuery(filter)
+        return `/api/blogs${query}`
+      },
+      fetcher({ method: 'GET', headers })
+      // { use: [logger] }
+    )
   return {
     data,
     isLoading,
+    isValidating,
     error,
     mutate,
     size,

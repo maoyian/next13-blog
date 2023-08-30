@@ -23,7 +23,6 @@ function BlogList(props, ref) {
         title: 'next入门',
       },
     })('/api/blogs')
-    console.log('r-new :>> ', r)
     if (r.success) {
       Toast.show({
         icon: 'success',
@@ -67,61 +66,45 @@ function BlogList(props, ref) {
     return Promise.resolve(r.success)
   }
 
-  const {
-    scroll: { scrollPercent },
-  } = useContext(GlobalContext)
-  const [nextLading, setNextLoading] = useState(false)
   const [filter, setFilter] = useState({
     sortBy: 'createTime',
     order: 'asc',
-    per_page: 8,
-    page: 1, // 37 82
+    per_page: 10,
+    page: 1,
     author: 'mm3',
   })
 
-  const { data, error, isLoading, mutate, setSize, size } = useBlogList(filter)
-  // const issues = data ? [].concat(...data) : [];
-  // const isLoadingMore =
-  //   isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined')
-  // const isEmpty = data?.[0]?.list?.length === 0
-  // const isReachingEnd = isEmpty || (data && data[data.length - 1]?.length < 4)
-  console.log('data :>> ', data)
-  if (scrollPercent === 100) {
-    console.log('size :>> ', size)
-    // if (!isLoadingMore && !isReachingEnd) setSize(size + 1)
-    // console.log('jia :>> ', isLoading)
-    // setNextLoading(true)
-    // setFilter((old) => {
-    //   return {
-    //     ...old,
-    //     page: old.page + 1,
-    //   }
-    // })
+  const { data, error, isLoading, isValidating, mutate, setSize, size } =
+    useBlogList(filter)
+  const isLoadingMore =
+    isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined')
+  const isEmpty = data?.[0]?.list?.length === 0
+  const isReachingEnd =
+    isEmpty || (data && data[size - 1]?.list?.length < filter.per_page)
+  const handleLoadMore = () => {
+    console.log(isLoadingMore, isReachingEnd, isLoading, isValidating)
+    if (!isLoadingMore && !isReachingEnd) {
+      setSize(size + 1)
+    }
   }
-
   if (error) return <div>Failed to load</div>
   if (isLoading) return <Loading />
-  if (!data)
-    return (
-      <div
-        onClick={() => {
-          console.log(22)
-          setSize(1)
-        }}
-      >
-        load
-      </div>
-    )
-  const { list: blogs } = data[0]
+
+  // 组装分页数据
+  const blogs = (data ? [].concat(...data) : []).reduce(
+    (pre, cur) => pre.concat(cur.list),
+    []
+  )
 
   return (
     <div
       ref={ref}
       className={`blog-list px-2 dark:bg-slate-950 dark:text-white`}
     >
-      <Button onClick={handleAdd} size="small" color="success">
+      {/* <Button onClick={handleAdd} size="small" color="success">
         add
-      </Button>
+      </Button> */}
+
       {blogs &&
         blogs.length &&
         blogs.map((blog) => (
@@ -132,8 +115,14 @@ function BlogList(props, ref) {
             info={blog}
           />
         ))}
+      <Button
+        className="w-full"
+        disabled={isLoadingMore || isReachingEnd}
+        onClick={handleLoadMore}
+      >
+        {isLoadingMore ? '加载中' : isReachingEnd ? '没有咯' : '查看更多'}
+      </Button>
       {blogs && blogs.length === 0 && 'empty'}
-      {/* <BlogItem /> */}
     </div>
   )
 }

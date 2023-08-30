@@ -15,7 +15,7 @@ export default function ToTop(props) {
     <>
       <svg
         style={{ bottom: isSafari ? 'calc(75px + 1rem)' : '1.25rem' }}
-        className="fixed text-red-300 right-2"
+        className="fixed z-10 text-red-300 right-2"
         xmlns="http://www.w3.org/2000/svg"
         height="40"
         width="40"
@@ -43,7 +43,7 @@ export default function ToTop(props) {
       <i
         style={{ bottom: isSafari ? 'calc(75px + 1.5rem)' : '1.75rem' }}
         onClick={toTop}
-        className="fixed text-red-300 cursor-pointer select-none iconfont right-5"
+        className="fixed z-10 text-red-300 cursor-pointer select-none iconfont right-5"
       >
         &#xe652;
       </i>
