@@ -5,7 +5,7 @@ import Loading from '../common/Loading'
 import { fetcher } from '@/configs/fetcher'
 import { setQuery } from '@/utils/params'
 import { useBlogList } from '@/hooks/useBlogList'
-import { Button, Toast } from 'antd-mobile'
+import { Button, Toast, InfiniteScroll, Footer } from 'antd-mobile'
 import { GlobalContext } from '@/pages/_app'
 
 function BlogList(props, ref) {
@@ -115,14 +115,17 @@ function BlogList(props, ref) {
             info={blog}
           />
         ))}
-      <Button
+      {/* <Button
         className="w-full"
         disabled={isLoadingMore || isReachingEnd}
         onClick={handleLoadMore}
       >
         {isLoadingMore ? '加载中' : isReachingEnd ? '没有咯' : '查看更多'}
-      </Button>
+      </Button> */}
+      <InfiniteScroll loadMore={handleLoadMore} hasMore={!isReachingEnd} />
+
       {blogs && blogs.length === 0 && 'empty'}
+      <Footer content="@ 2004-2020 Alipay.com All rights reserved"></Footer>
     </div>
   )
 }
