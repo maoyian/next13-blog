@@ -43,7 +43,7 @@ export default function ToTop(props) {
       <i
         style={{ bottom: isSafari ? 'calc(75px + 1.5rem)' : '1.75rem' }}
         onClick={toTop}
-        className="fixed z-10 text-red-300 cursor-pointer select-none iconfont right-5"
+        className="fixed z-10 text-red-300 cursor-pointer select-none iconfont right-[1.35rem]"
       >
         &#xe652;
       </i>
