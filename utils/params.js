@@ -1,5 +1,6 @@
 //URLSearchParams
 // 把对象以字符串方式拼接在地址后面
+// GET请求需要
 export const setQuery = (queryObj = {}) => {
   return Object.keys(queryObj).length ? `?${new URLSearchParams(queryObj)}` : ''
 }

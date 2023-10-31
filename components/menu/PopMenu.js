@@ -50,7 +50,7 @@ export default function PopMenu() {
     <>
       {isMenu && (
         <div
-          className="fixed bottom-0 right-0 flex bg-opacity-75 top-14 searchBox left-2 bg-slate-500 text-slate-500"
+          className="fixed bottom-0 left-0 right-0 z-10 flex bg-opacity-75 top-14 searchBox bg-slate-500 text-slate-500"
           onClick={() => setMenu(false)}
         >
           {/* 菜单 */}

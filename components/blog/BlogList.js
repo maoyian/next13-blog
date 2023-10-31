@@ -7,6 +7,7 @@ import { setQuery } from '@/utils/params'
 import { useBlogList } from '@/hooks/useBlogList'
 import { Button, Toast, InfiniteScroll, Footer } from 'antd-mobile'
 import { GlobalContext } from '@/pages/_app'
+import useSWRInfinite from 'swr/infinite'
 
 function BlogList(props, ref) {
   const handleAdd = async () => {
@@ -66,16 +67,44 @@ function BlogList(props, ref) {
     return Promise.resolve(r.success)
   }
 
-  const [filter, setFilter] = useState({
+  // const [filter, setFilter] = useState({
+  //   sortBy: 'createTime',
+  //   order: 'asc',
+  //   per_page: 10,
+  //   page: 1,
+  //   author: 'mm3',
+  // })
+  const filter = {
     sortBy: 'createTime',
     order: 'asc',
-    per_page: 10,
+    per_page: 20,
     page: 1,
-    author: 'mm3',
-  })
+    // author: 'mm',
+  }
 
-  const { data, error, isLoading, isValidating, mutate, setSize, size } =
-    useBlogList(filter)
+  // const { data, error, isLoading, isValidating, mutate, setSize, size } =
+  //   useBlogList(filter)
+  const { data, error, mutate, size, setSize, isValidating, isLoading } =
+    useSWRInfinite(
+      (index) => {
+        // setFilter({
+        //   ...filter,
+        //   page: index + 1,
+        // })
+        filter.page = index + 1
+        console.log('index :>> ', index)
+        console.log('filter.page :>> ', filter.page)
+        const query = setQuery(filter)
+        return `/api/blogs${query}`
+      },
+      fetcher({
+        method: 'GET',
+        headers: {
+          sortField: 'createTime',
+          sortOrder: 'des',
+        },
+      })
+    )
   const isLoadingMore =
     isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined')
   const isEmpty = data?.[0]?.list?.length === 0
@@ -125,7 +154,7 @@ function BlogList(props, ref) {
       <InfiniteScroll loadMore={handleLoadMore} hasMore={!isReachingEnd} />
 
       {blogs && blogs.length === 0 && 'empty'}
-      <Footer content="@ 2004-2020 Alipay.com All rights reserved"></Footer>
+      <Footer content="@copyright 阿信不敲代码的博客"></Footer>
     </div>
   )
 }

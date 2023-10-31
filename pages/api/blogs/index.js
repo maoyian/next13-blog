@@ -24,7 +24,13 @@ export default async function handler(req, res) {
     case 'GET': {
       const u = req.url.split('/api/blogs?')[1]
       const filter = getQuery(u) // 获取url上的查询参数
-      const { order, sortBy, page, per_page, ...select } = filter
+      const { keyword, order, sortBy, page, per_page, ...select } = filter
+      console.log('keyword :>> ', keyword)
+      if (keyword) {
+        // 关键字查询
+        select.title = keyword
+      }
+
       // 排序
       const sortOption =
         sortBy && (order === 'des' || order === 'asc')
@@ -48,14 +54,28 @@ export default async function handler(req, res) {
         return { ...li, _id: enCode(li._id) }
       })
       // 手动分页
-      const start = (page - 1) * per_page
-      const end = page * per_page
+      const start = (page - 1) * per_page || 0
+      const end = page * per_page || Infinity
+      console.log('start :>> ', start, end)
       res
         .status(200)
         .json({ list: enCodeList.slice(start, end), total: list.length })
       break
     }
     case 'POST': {
+      // 设置基本信息
+      !params.imgUrl
+        ? (params.imgUrl =
+            'https://oss.lixiaoxu.cn/halo/image-1677136471067.png')
+        : ''
+      !params.title ? (params.title = 'next入门到放弃') : ''
+      !params.author ? (params.author = 'mm') : ''
+      !params.headImg
+        ? (params.headImg =
+            'https://oss.lixiaoxu.cn/halo2//0e1c1845b0741107bd33f52429f93f82_1.jpg')
+        : ''
+      !params.priseCount ? (params.priseCount = 0) : ''
+
       const createTime = new Date().getTime()
       // 新建
       const { acknowledged } = await db
@@ -69,6 +89,18 @@ export default async function handler(req, res) {
     case 'DELETE': {
       console.log('req :>> ', req)
       // 删除
+      break
+    }
+    case 'PUT': {
+      console.log('req :>> put', typeof params)
+      // const createTime = new Date().getTime()
+      // const { title, content, type } = params
+      // const { acknowledged } = await db
+      //   .collection('blogs')
+      //   .insertOne({ title, content, createTime })
+      // res.status(200).json({
+      //   success: acknowledged,
+      // })
       break
     }
     default: {

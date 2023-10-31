@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 export default function BlogItem(props) {
+  const router = useRouter()
+
   const { info, onUpdate, onDelete } = props
   // const info = {
   //   imgUrl: 'https://oss.lixiaoxu.cn/halo/image-1677136471067.png',
@@ -18,18 +21,29 @@ export default function BlogItem(props) {
   const handleComment = () => {
     console.log('comment')
   }
+  const goDetail = () => {
+    const { _id } = info
+    // router.push('/detail')
+    router.push({
+      pathname: '/detail',
+      query: {
+        _id,
+      },
+    })
+  }
+  const handleDelete = (e) => {
+    if (loading) return
+    onDelete(info._id).then((r) => {
+      if (!r) {
+        setLoading(false)
+      }
+    })
+    setLoading(true)
+  }
 
   return (
     <div
-      onClick={(e) => {
-        if (loading) return
-        onDelete(info._id).then((r) => {
-          if (!r) {
-            setLoading(false)
-          }
-        })
-        setLoading(true)
-      }}
+      onClick={goDetail}
       className={`${
         loading ? 'opacity-50' : ''
       } flex justify-between p-2 mb-2 bg-white rounded dark:bg-slate-700`}
